@@ -1,0 +1,18 @@
+# Copia estas líneas al .gitignore de tu app.
+# El de ship-mobile no protege el repo de tu proyecto.
+
+.ship-progress.json
+SHIP-CHECKLIST.md
+
+.env
+.env.*
+!.env.example
+
+*.jks
+*.keystore
+key.properties
+*.p8
+*.p12
+*.mobileprovision
+google-play-service-account.json
+AuthKey_*.p8

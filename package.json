@@ -1,0 +1,15 @@
+{
+  "name": "ship-mobile",
+  "version": "1.1.0",
+  "description": "Guía para publicar en Google Play y App Store en el menor calendario que las tiendas permiten.",
+  "bin": { "ship-mobile": "bin/ship.js" },
+  "scripts": {
+    "start": "node bin/ship.js",
+    "web": "node bin/ship.js web",
+    "status": "node bin/ship.js status",
+    "export": "node bin/ship.js export"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT",
+  "keywords": ["android", "ios", "app-store", "google-play", "release", "react-native", "flutter", "expo"]
+}

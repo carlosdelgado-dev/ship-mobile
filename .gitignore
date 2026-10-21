@@ -1,0 +1,14 @@
+node_modules/
+.ship-progress.json
+SHIP-CHECKLIST.md
+.env
+.env.*
+.DS_Store
+# Nunca subas credenciales
+*.jks
+*.keystore
+key.properties
+*.p8
+*.p12
+*.mobileprovision
+google-play-service-account.json

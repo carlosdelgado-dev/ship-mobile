@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="270" viewBox="0 0 960 270" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Assets mínimos para no bloquear la ficha</title>
+  <desc id="desc">Ícono iOS 1024 sin transparencia, ícono Android 512, feature graphic 1024 por 500, y capturas reales del tamaño que pida la consola.</desc>
+  <rect width="960" height="270" rx="18" fill="#f5f6fb"/>
+  <text x="28" y="34" fill="#1a1d2b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="700">Con esto la ficha deja de bloquear el envío</text>
+  <text x="28" y="56" fill="#667086" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">Capturas del simulador o del emulador. El tamaño obligatorio cambia: confírmalo en la pantalla de carga de cada tienda.</text>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" text-anchor="middle">
+    <rect x="48" y="78" width="96" height="96" rx="14" fill="#4f46e5"/>
+    <text x="96" y="132" fill="#fff" font-size="16" font-weight="700">1024</text>
+    <text x="96" y="196" fill="#1a1d2b" font-size="14" font-weight="700">Ícono iOS</text>
+    <text x="96" y="216" fill="#667086" font-size="12">Sin transparencia</text>
+
+    <rect x="230" y="90" width="84" height="84" rx="12" fill="#16a34a"/>
+    <text x="272" y="138" fill="#fff" font-size="16" font-weight="700">512</text>
+    <text x="272" y="196" fill="#1a1d2b" font-size="14" font-weight="700">Ícono Play</text>
+    <text x="272" y="216" fill="#667086" font-size="12">PNG cuadrado</text>
+
+    <rect x="390" y="96" width="230" height="72" rx="10" fill="#d97706"/>
+    <text x="505" y="138" fill="#fff" font-size="16" font-weight="700">1024 × 500</text>
+    <text x="505" y="196" fill="#1a1d2b" font-size="14" font-weight="700">Feature graphic</text>
+    <text x="505" y="216" fill="#667086" font-size="12">Solo Android</text>
+
+    <rect x="760" y="72" width="70" height="128" rx="12" fill="#1a1d2b"/>
+    <rect x="766" y="84" width="58" height="104" rx="4" fill="#e0e7ff"/>
+    <text x="795" y="140" fill="#1a1d2b" font-size="12" font-weight="700">6.9"</text>
+    <text x="795" y="224" fill="#1a1d2b" font-size="14" font-weight="700">Capturas</text>
+    <text x="795" y="244" fill="#667086" font-size="12">2 o 3 reales</text>
+  </g>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Calendario corto para publicar en Google Play y App Store</title>
+  <desc id="desc">Las cuentas empiezan el día 0. La prueba cerrada de Android empieza el día 1 y dura 14 días. iOS se envía a revisión en paralelo y puede estar publicado antes del día 6.</desc>
+  <rect width="960" height="400" rx="18" fill="#f5f6fb"/>
+  <text x="28" y="36" fill="#1a1d2b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="700">El calendario corto: enciende los relojes y trabaja mientras corren</text>
+  <text x="28" y="58" fill="#667086" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">El trabajo cabe en dos días. La verificación, los 14 días de prueba cerrada y la revisión no se adelantan.</text>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#667086">
+    <text x="168" y="92" text-anchor="middle">Día 0</text>
+    <text x="252" y="92" text-anchor="middle">1</text>
+    <text x="336" y="92" text-anchor="middle">2</text>
+    <text x="420" y="92" text-anchor="middle">4</text>
+    <text x="588" y="92" text-anchor="middle">8</text>
+    <text x="840" y="92" text-anchor="middle">14</text>
+    <text x="924" y="92" text-anchor="middle">16</text>
+  </g>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1d2b">
+    <text x="24" y="128">Cuentas</text>
+    <text x="24" y="200">Android</text>
+    <text x="24" y="286">iOS</text>
+  </g>
+
+  <rect x="150" y="108" width="786" height="36" rx="8" fill="#fff"/>
+  <rect x="168" y="116" width="168" height="20" rx="6" fill="#d97706"/>
+  <text x="252" y="130" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">Alta y verificación</text>
+
+  <rect x="150" y="168" width="786" height="52" rx="8" fill="#fff"/>
+  <rect x="210" y="176" width="42" height="18" rx="5" fill="#94a3b8"/>
+  <text x="231" y="189" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700">AAB</text>
+  <rect x="252" y="176" width="588" height="18" rx="5" fill="#4f46e5"/>
+  <text x="546" y="189" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">Prueba cerrada · 12 testers · 14 días · no se acorta</text>
+  <rect x="840" y="198" width="84" height="16" rx="5" fill="#16a34a"/>
+  <text x="882" y="210" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">Producción</text>
+
+  <rect x="150" y="252" width="786" height="52" rx="8" fill="#fff"/>
+  <rect x="210" y="268" width="42" height="20" rx="5" fill="#2563eb"/>
+  <text x="231" y="282" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700">Build</text>
+  <rect x="252" y="268" width="126" height="20" rx="5" fill="#1d4ed8"/>
+  <text x="315" y="282" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">Revisión</text>
+  <rect x="386" y="268" width="52" height="20" rx="5" fill="#16a34a"/>
+  <text x="412" y="282" text-anchor="middle" fill="#fff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700">Tienda</text>
+
+  <text x="28" y="348" fill="#667086" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12">Si la organización de Play ya está verificada, el tramo morado no aplica y Android puede salir la misma semana que iOS.</text>
+  <text x="28" y="370" fill="#667086" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12">Finanzas, cripto, salud, VPN y gobiernos exigen organización: el D-U-N-S es el reloj, y la cuenta personal no lo sustituye.</text>
+</svg>

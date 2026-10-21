@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ship-mobile · Publica tu app en el menor calendario posible</title>
+<style>
+:root{--bg:#f5f6fb;--sf:#fff;--sf2:#eceff7;--tx:#1a1d2b;--mu:#667086;--ac:#4f46e5;--ok:#16a34a;--wa:#d97706;--er:#dc2626;--bd:#dde1ec;--play:#01875f;--apple:#111;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1017;--sf:#171a24;--sf2:#202534;--tx:#e8eaf3;--mu:#98a1b8;--ac:#8b93ff;--bd:#2a3043;--apple:#f2f3f7;color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;background:var(--sf);border-right:1px solid var(--bd);padding:18px 14px 24px;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;gap:10px;align-items:center}
+.brand strong{display:block;font-size:16px;line-height:1.1}
+.brand span{color:var(--mu);font-size:12px}
+.marks{display:flex;gap:6px}
+img.store-ico{width:28px;height:28px;object-fit:contain;display:block;flex:none;background:transparent}
+.acct img.store-ico{width:44px;height:44px}
+.side nav{display:flex;flex-direction:column;gap:4px}
+.side nav button{display:flex;align-items:center;gap:8px;text-align:left;width:100%;background:transparent;border-color:transparent}
+.side nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.side nav button .n{margin-left:auto;font-size:11px;opacity:.8}
+.side-meter b{font-size:22px;line-height:1}
+.side-profile{margin-top:auto;font-size:13px;color:var(--mu)}
+.maincol{min-width:0;padding-bottom:120px}
+.maincol button,.maincol a.btn,.maincol input,.maincol select{scroll-margin-bottom:96px}
+header{background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:4}
+.wrap{max-width:980px;margin:0 auto;padding:12px 16px}
+h1{font-size:16px;margin:0}h2{font-size:22px;margin:8px 0 6px}h3{font-size:15px;margin:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.sp{flex:1}
+input,select,textarea,button{font:inherit;color:inherit}
+input,select,textarea{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:7px 10px}
+textarea{min-height:120px;resize:vertical;font-size:13px;width:100%}
+button,a.btn{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:7px 12px;cursor:pointer;color:inherit;text-decoration:none;display:inline-block}
+button:hover,a.btn:hover{border-color:var(--ac)}
+button.pri,a.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,a.btn:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+.now{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fields label,.stack label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+.fields .wide{grid-column:1/-1}
+.bar{height:8px;background:var(--sf2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+.bar.xl{height:12px}
+.pill{border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;color:#fff;display:inline-block}
+.mu{background:#7b8398}.ac{background:var(--ac)}.wa{background:var(--wa)}.er{background:var(--er)}.ok{background:var(--ok)}
+.t-mu{color:var(--mu)}.small{font-size:13px}.kicker{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ac);margin:0 0 4px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button{font-size:12px;padding:5px 9px}.seg button.on{color:#fff;border-color:transparent}
+.hero{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-top:8px}
+.hero .pct{font-size:40px;font-weight:750;letter-spacing:-.04em;line-height:1}
+.phases{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.phases li{background:var(--sf2);border-radius:10px;padding:8px 10px}
+.phases li.now{outline:2px solid var(--ac)}
+.phases li.done{background:#e8f8ee}
+@media(prefers-color-scheme:dark){.phases li.done{background:#14301f}}
+.phases li span{display:block;font-size:12px;color:var(--mu)}
+.need{border-color:#f59e0b}
+.acct{display:flex;gap:10px;align-items:flex-start}
+.acct h3{display:flex;align-items:center;gap:8px}
+ol.plain{margin:8px 0;padding-left:18px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.cal-h{text-align:center;font-size:11px;color:var(--mu);font-weight:700}
+.cal-day{padding:0;height:36px;border-radius:8px}
+.cal-day.today{outline:2px solid var(--ac)}
+.cal-day.range{background:#e0e7ff}
+.cal-day.mark-closed{background:var(--ac);color:#fff;border-color:var(--ac)}
+.cal-day.mark-ios{box-shadow:inset 0 -3px 0 var(--apple)}
+.cal-day.mark-play{box-shadow:inset 0 3px 0 var(--play)}
+@media(prefers-color-scheme:dark){.cal-day.range{background:#2a3158}}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.step{display:flex;gap:10px;align-items:flex-start}
+.step input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+.step details{flex:1;min-width:0}summary{cursor:pointer;font-weight:600}summary::-webkit-details-marker{display:none}
+.step.d summary{text-decoration:line-through;color:var(--mu)}
+pre{background:#0f1320;color:#d6e4ff;border-radius:8px;padding:10px 12px;overflow-x:auto;font-size:12.5px;white-space:pre-wrap}pre .n{color:#8f9bb8}
+.badge{font-size:11px;border:1px solid var(--bd);border-radius:6px;padding:1px 6px;color:var(--mu)}
+.crumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--sf2);border-radius:8px;padding:8px 10px;margin:8px 0}
+.banner{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:12px 14px;margin:10px 0}
+@media(prefers-color-scheme:dark){.banner{background:#2a2118;color:#fdba74;border-color:#9a3412}}
+.clock b{display:block;font-size:22px;line-height:1.2;margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--mu);font-weight:600}
+img.wide{width:100%;height:auto;border-radius:12px;display:block}
+.hide{display:none}
+select.hd{max-width:180px}
+.sheet dt{color:var(--mu);font-size:12px} .sheet dd{margin:0 0 8px}
+.dock{position:fixed;left:272px;right:0;bottom:0;z-index:6;background:var(--sf);border-top:1px solid var(--bd);box-shadow:0 -8px 24px rgba(16,20,40,.06)}
+.dock summary{list-style:none;cursor:pointer;padding:10px 16px;display:flex;gap:12px;align-items:center}
+.dock summary::-webkit-details-marker{display:none}
+.dock summary .bar{flex:1;max-width:220px}
+.dock-body{max-height:42vh;overflow:auto;padding:0 16px 14px;border-top:1px solid var(--bd)}
+.dock-col{margin-top:10px}
+.dock-col h3{font-size:12px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.dock-item{display:flex;gap:8px;align-items:flex-start;padding:4px 0;font-size:13px}
+footer{padding-bottom:8px}
+@media(max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:0;height:auto;z-index:5;border-right:0;border-bottom:1px solid var(--bd)}
+  .side nav{flex-direction:row;overflow-x:auto}
+  .side nav button{width:auto;white-space:nowrap}
+  .side-profile{display:none}
+  .fields{grid-template-columns:1fr}
+  .dock{left:0}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">
+    <span class="marks" id="brandMarks"></span>
+    <div><strong>ship-mobile</strong><span>Play y App Store</span></div>
+  </div>
+  <div class="side-meter" id="sideMeter"></div>
+  <nav id="sideNav" aria-label="Secciones"></nav>
+  <div class="side-profile" id="sideProfile"></div>
+</aside>
+<div class="maincol">
+<header><div class="wrap">
+  <div class="row">
+    <h1>Publicar</h1>
+    <select id="fw" class="hd" aria-label="Tecnología">
+      <option value="react-native">React Native</option>
+      <option value="expo">Expo (EAS)</option>
+      <option value="flutter">Flutter</option>
+      <option value="native">Nativo</option>
+    </select>
+    <select id="platform" class="hd" aria-label="Dónde publicas">
+      <option value="both">Android + iOS</option>
+      <option value="android">Solo Android</option>
+      <option value="ios">Solo iOS</option>
+    </select>
+    <span id="count" class="badge"></span>
+    <span class="sp"></span>
+    <button type="button" id="copyMd">Copiar resumen</button>
+    <button type="button" id="exportJson">Exportar JSON</button>
+    <button type="button" id="importBtn">Importar</button>
+    <input id="importFile" class="hide" type="file" accept="application/json">
+    <button type="button" id="reset">Reiniciar</button>
+  </div>
+</div></header>
+<main class="wrap" id="view"><p>Cargando la guía…</p></main>
+<footer class="wrap small t-mu">Código libre (MIT). Las tiendas cambian categorías, tamaños y plazos: confirma el texto vigente en Play Console y App Store Connect. El progreso queda en este navegador. La terminal lo guarda en <code>.ship-progress.json</code>. Exportar / importar los junta. Local: <code>node bin/ship.js web</code>.</footer>
+</div>
+</div>
+<details id="dock" class="dock">
+  <summary id="dockSum">Checks</summary>
+  <div class="dock-body" id="dockBody"></div>
+</details>
+<script src="catalog.js"></script>
+<script>
+(() => {
+const SHIP = window.SHIP;
+const FWN = {'react-native':'React Native', expo:'Expo', flutter:'Flutter', native:'Nativo'};
+const STAT = ['Sin iniciar','En progreso','En revisión','Rechazada','Publicada'];
+const SC = ['mu','ac','wa','er','ok'];
+const TABS = [['home','Hoy'],['ruta','Ruta'],['prep','Preparación'],['android','Android'],['ios','iOS'],['gate','Pre-envío'],['pol','Políticas']];
+const PHASE = {prep:'Preparación', android:'Android', ios:'iOS'};
+const WEEK = ['L','M','X','J','V','S','D'];
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const ICON_PLAY = '<img class="store-ico" src="img/play_store.png" width="28" height="28" alt="Google Play">';
+const ICON_APPLE = '<img class="store-ico" src="img/App_Store.webp" width="28" height="28" alt="App Store">';
+
+function DEF(){return {
+  app:'', framework:'react-native', platform:'both', playAccount:'', accounts:'',
+  tab:'home', done:{}, skipped:{}, gates:{}, st:{android:0, ios:0}, f:{}, pf:'all',
+  closedStartedAt:'', iosSubmittedAt:'', playSubmittedAt:'',
+  acct:{play:'', apple:''}, dockOpen:false, calTarget:'closed'
+};}
+let S = DEF();
+try {
+  const saved = JSON.parse(localStorage.getItem('shipmobile') || '{}');
+  S = Object.assign(DEF(), saved);
+  if (saved.fw && !saved.framework) S.framework = saved.fw;
+  ['done','skipped','gates','f','st','acct'].forEach((k) => { if (!S[k] || typeof S[k] !== 'object') S[k] = DEF()[k]; });
+  S.acct.play = S.acct.play || '';
+  S.acct.apple = S.acct.apple || '';
+} catch (e) { S = DEF(); }
+const save = () => { try { localStorage.setItem('shipmobile', JSON.stringify(S)); } catch (e) {} };
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const today = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const pretty = (iso) => { if (!iso) return ''; const p = iso.split('-'); return Number(p[2])+' '+MONTHS[Number(p[1])-1]+' '+p[0]; };
+const cmdsOf = (s) => s.commands ? (s.commands[S.framework] || s.commands.default || []) : [];
+let keepScroll = false;
+let calMonth = '';
+
+function mark(id, how) {
+  if (how === 'skip') { S.skipped[id] = true; delete S.done[id]; }
+  else if (how === 'clear') { delete S.done[id]; delete S.skipped[id]; }
+  else {
+    S.done[id] = true; delete S.skipped[id];
+    if (id === 'prep-accounts' && !S.accounts) S.accounts = 'wait';
+    if (id === 'a-closed' && !S.closedStartedAt) S.closedStartedAt = today();
+    if (id === 'i-submit' && !S.iosSubmittedAt) S.iosSubmittedAt = today();
+    if (id === 'a-prod' && !S.playSubmittedAt) S.playSubmittedAt = today();
+  }
+  save();
+}
+
+function icons(platform) {
+  const p = platform || S.platform;
+  const bits = [];
+  if (p !== 'ios') bits.push(ICON_PLAY);
+  if (p !== 'android') bits.push(ICON_APPLE);
+  return bits.join('');
+}
+function catName(store, id) {
+  const list = store === 'play' ? SHIP.PLAY : SHIP.APPLE;
+  const c = SHIP.categoryById(list, id);
+  return c ? c.name : '';
+}
+function subName(store, catId, subId) {
+  const hit = SHIP.subcategories(store, catId).find((s) => s.id === subId);
+  return hit ? hit.name : '';
+}
+function normalizeSubs() {
+  [['play','playCat','playSub'],['apple','iosCat','iosSub']].forEach(([store, catKey, subKey]) => {
+    if (store === 'play' && S.platform === 'ios') return;
+    if (store === 'apple' && S.platform === 'android') return;
+    const subs = SHIP.subcategories(store, S.f[catKey]);
+    if (S.f[subKey] && !subs.some((s) => s.id === S.f[subKey])) S.f[subKey] = '';
+    if (!S.f[subKey] && subs.length === 1) S.f[subKey] = subs[0].id;
+  });
+}
+function profileGaps() {
+  const g = [];
+  if (!String(S.app || '').trim()) g.push('el nombre de la app');
+  if (String(S.f.desc || '').trim().length < 12) g.push('una descripción de al menos una frase');
+  if (S.platform !== 'ios') {
+    if (!S.f.playCat) g.push('la categoría de Google Play');
+    if (!S.f.playSub) g.push('la subcategoría de Google Play');
+  }
+  if (S.platform !== 'android') {
+    if (!S.f.iosCat) g.push('la categoría de App Store');
+    if (!S.f.iosSub) g.push('la subcategoría de App Store');
+  }
+  return g;
+}
+function optList(list, selected, placeholder) {
+  const head = `<option value="">${esc(placeholder)}</option>`;
+  return head + list.map((c) => `<option value="${esc(c.id)}"${c.id === selected ? ' selected' : ''}>${esc(c.name)}</option>`).join('');
+}
+function applyAcct() {
+  const vals = [];
+  if (S.platform !== 'ios') vals.push(S.acct.play);
+  if (S.platform !== 'android') vals.push(S.acct.apple);
+  if (vals.length && vals.every((v) => v)) {
+    S.accounts = vals.every((v) => v === 'have') ? 'ok' : 'wait';
+    S.done['prep-accounts'] = true;
+    delete S.skipped['prep-accounts'];
+  } else if (vals.some((v) => !v)) {
+    if (!vals.some((v) => v)) S.accounts = '';
+    delete S.done['prep-accounts'];
+  }
+}
+
+function crumb(s) {
+  const place = (s.screen && s.screen[0]) || s.phase;
+  const action = (s.screen && s.screen[1]) || 'Continuar';
+  const tone = s.platform === 'android' ? 'Google Play' : s.platform === 'ios' ? 'App Store' : 'Las dos tiendas';
+  const clock = s.startsClock ? '<span class="pill wa">Reloj</span>' : '';
+  return `<div class="crumb"><span class="badge">${tone}</span><span>${esc(place)}</span><span class="t-mu">→</span><b>${esc(action)}</b>${clock}</div>`;
+}
+function cmdsHtml(s) {
+  const c = cmdsOf(s);
+  if (!c.length) return '';
+  const body = c.map((x) => x[0] === '#' ? `<span class="n">${esc(x)}</span>` : esc(x)).join('\n');
+  return `<pre>${body}</pre><p><button type="button" data-cmd="${s.id}">Copiar comandos (${esc(FWN[S.framework] || '')})</button></p>`;
+}
+
+function acctChoice(store, value, label) {
+  const on = S.acct[store] === value;
+  return `<button type="button" data-acct="${store}:${value}" class="${on ? 'on ac' : ''}">${label}</button>`;
+}
+function accountsHtml() {
+  const A = SHIP.ACCOUNTS;
+  const play = S.platform === 'ios' ? '' : `<div class="card"><div class="acct"><span>${ICON_PLAY}</span><div>
+    <h3>Google Play Console</h3>
+    <p class="small">USD 25, un solo pago. La cuenta Google con la que entres será la administradora. Si la app es de una empresa, o de finanzas, cripto, salud, VPN o un gobierno, el tipo es Organización.</p>
+    <ol class="plain small"><li>Abre el alta e inicia sesión con la cuenta del titular.</li><li>Elige Personal u Organización y paga el registro.</li><li>Completa identidad y contacto. Organización pide el D-U-N-S, gratis en Dun & Bradstreet.</li><li>Cuando el formulario quede enviado, márcalo aquí. No esperes a que terminen de verificarte para seguir con el AAB.</li></ol>
+    <p><a class="btn pri" href="${A.playSignup}" target="_blank" rel="noopener noreferrer">Crear cuenta de Play Console</a> <a class="btn" href="${A.playConsole}" target="_blank" rel="noopener noreferrer">Abrir la consola</a> <a class="btn" href="${A.playHelp}" target="_blank" rel="noopener noreferrer">Tipos de cuenta</a> <a class="btn" href="${A.duns}" target="_blank" rel="noopener noreferrer">Pedir D-U-N-S</a></p>
+    <div class="seg">${acctChoice('play','have','Ya tengo la cuenta')}${acctChoice('play','sent','Alta enviada')}</div>
+  </div></div></div>`;
+  const apple = S.platform === 'android' ? '' : `<div class="card"><div class="acct"><span>${ICON_APPLE}</span><div>
+    <h3>Apple Developer Program</h3>
+    <p class="small">USD 99 al año. Hace falta un Apple ID con verificación en dos pasos. Si la app es de una empresa, o es una billetera de criptoactivos, la membresía es de organización: usa el D-U-N-S y el nombre legal.</p>
+    <ol class="plain small"><li>Entra con el Apple ID del titular.</li><li>Elige Individual u Organización y paga la cuota anual.</li><li>Si es organización, confirma el D-U-N-S antes de enviar: si no coincide, la inscripción se detiene.</li><li>Márcalo al enviar. La revisión de Apple suele tardar uno o dos días, a veces más.</li></ol>
+    <p><a class="btn pri" href="${A.appleEnroll}" target="_blank" rel="noopener noreferrer">Inscribirse en Apple Developer</a> <a class="btn" href="${A.appleAccount}" target="_blank" rel="noopener noreferrer">Abrir la cuenta</a> <a class="btn" href="${A.appleDuns}" target="_blank" rel="noopener noreferrer">Buscar D-U-N-S</a></p>
+    <div class="seg">${acctChoice('apple','have','Ya tengo la cuenta')}${acctChoice('apple','sent','Inscripción enviada')}</div>
+  </div></div></div>`;
+  return play + apple;
+}
+function linksHtml(s) {
+  if (!s.links || !s.links.length) return '';
+  return `<p>${s.links.map((l) => `<a class="btn" href="${esc(l.href)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}</a>`).join(' ')}</p>`;
+}
+function stepHtml(s, open) {
+  const on = !!(S.done[s.id] || S.skipped[s.id]);
+  const cls = S.done[s.id] ? 'd' : '';
+  const badge = S.skipped[s.id] ? '<span class="badge">no aplica</span>' : `<span class="badge">${esc(s.time)}</span>`;
+  const tip = s.tip ? `<p><b>Para no perder días: </b>${esc(s.tip)}</p>` : '';
+  const extra = s.id === 'prep-accounts' ? accountsHtml() : linksHtml(s);
+  return `<div class="card step ${cls}"><input type="checkbox" data-id="${s.id}" ${on ? 'checked' : ''} aria-label="${esc(s.title)}"><details data-sid="${s.id}" ${open || s.id === 'prep-accounts' ? 'open' : ''}><summary>${esc(s.title)} ${badge}</summary>${crumb(s)}<p>${esc(s.why || '')}</p>${tip}${extra}${cmdsHtml(s)}<p><button type="button" data-skip="${s.id}">No aplica</button></p></details></div>`;
+}
+
+function accountButtons() {
+  const opts = [['personal','Personal nueva'],['org','Organización verificada'],['unknown','Aún no lo sé']];
+  return opts.map(([k, n]) => `<button type="button" data-account="${k}" class="${S.playAccount === k ? 'on ac' : ''}">${n}</button>`).join('');
+}
+function closedBits() {
+  if (!S.closedStartedAt) return { big:'Sin empezar', sub:'Elige «Prueba cerrada» en el calendario y pulsa el día en que la publiques.' };
+  const since = SHIP.daysSince(S.closedStartedAt);
+  if (since < 0) return { big:'Fecha futura', sub:'Corrige el día de inicio.' };
+  if (since >= SHIP.CLOSED_DAYS) return { big:'14 días cumplidos', sub:'Mira en Play Console si ya puedes pedir producción. La fecha oficial es la de ellos.' };
+  return { big:`Día ${since + 1} de 14`, sub:`Orientativo para pedir producción: ${pretty(SHIP.plusDays(S.closedStartedAt, 14))}. Confírmalo en la consola.` };
+}
+function clockCards() {
+  const acc = { '':'Sin alta', wait:'En verificación', ok:'Listas' }[S.accounts] || 'Sin alta';
+  const accSub = S.accounts === 'wait'
+    ? 'Sigue con el ID, la política y el build. No esperes la verificación parado.'
+    : 'Da de alta Play y Apple en la próxima hora, aunque la app no esté lista.';
+  const cards = [`<div class="card clock"><p class="kicker">Cuentas</p><b>${acc}</b><p class="small">${accSub}</p>
+    <select id="accounts" aria-label="Estado de las cuentas">
+      <option value="" ${S.accounts === '' ? 'selected' : ''}>Sin alta</option>
+      <option value="wait" ${S.accounts === 'wait' ? 'selected' : ''}>Alta enviada, en verificación</option>
+      <option value="ok" ${S.accounts === 'ok' ? 'selected' : ''}>Verificadas</option>
+    </select></div>`];
+  if (S.platform !== 'ios' && S.playAccount !== 'org') {
+    const c = closedBits();
+    cards.push(`<div class="card clock"><p class="kicker">Prueba cerrada</p><b>${esc(c.big)}</b><p class="small">${esc(c.sub)}</p></div>`);
+  }
+  if (S.platform !== 'android') {
+    const big = S.iosSubmittedAt ? 'Enviada '+pretty(S.iosSubmittedAt) : 'Sin enviar';
+    cards.push(`<div class="card clock"><p class="kicker">Revisión de Apple</p><b>${esc(big)}</b><p class="small">Suele tardar 24-48 h desde el envío, a veces más.</p></div>`);
+  }
+  if (S.platform !== 'ios' && S.playAccount === 'org') {
+    const big = S.playSubmittedAt ? 'Enviada '+pretty(S.playSubmittedAt) : 'Sin enviar';
+    cards.push(`<div class="card clock"><p class="kicker">Producción Play</p><b>${esc(big)}</b><p class="small">Con la organización verificada no hay espera de 14 días. Revisa igual el aviso de tu consola.</p></div>`);
+  }
+  return `<div class="grid">${cards.join('')}</div>`;
+}
+
+function shiftMonth(dir) {
+  if (!calMonth) calMonth = today().slice(0, 7);
+  const [y, m] = calMonth.split('-').map(Number);
+  const d = new Date(y, m - 1 + dir, 1);
+  calMonth = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function calendarHtml() {
+  if (!calMonth) calMonth = (S.closedStartedAt || S.iosSubmittedAt || S.playSubmittedAt || today()).slice(0, 7);
+  const [y, m] = calMonth.split('-').map(Number);
+  const first = new Date(y, m - 1, 1);
+  const pad = (first.getDay() + 6) % 7;
+  const dim = new Date(y, m, 0).getDate();
+  const label = MONTHS[m - 1] + ' ' + y;
+  const closed = S.platform !== 'ios' ? S.closedStartedAt : '';
+  const closedEnd = closed ? SHIP.plusDays(closed, 13) : '';
+  let cells = WEEK.map((d) => `<span class="cal-h">${d}</span>`).join('');
+  for (let i = 0; i < pad; i++) cells += '<span></span>';
+  for (let day = 1; day <= dim; day++) {
+    const iso = y + '-' + String(m).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+    const cls = ['cal-day'];
+    if (iso === today()) cls.push('today');
+    if (closed && iso >= closed && iso <= closedEnd) cls.push('range');
+    if (iso === closed) cls.push('mark-closed');
+    if (S.platform !== 'android' && iso === S.iosSubmittedAt) cls.push('mark-ios');
+    if (S.platform !== 'ios' && iso === S.playSubmittedAt) cls.push('mark-play');
+    cells += `<button type="button" class="${cls.join(' ')}" data-day="${iso}" aria-label="${day} de ${label}">${day}</button>`;
+  }
+  const targets = [];
+  if (S.platform !== 'ios' && S.playAccount !== 'org') targets.push(['closed', 'Prueba cerrada']);
+  if (S.platform !== 'ios') targets.push(['play', 'Envío a Play']);
+  if (S.platform !== 'android') targets.push(['ios', 'Envío a Apple']);
+  if (!targets.some((t) => t[0] === S.calTarget)) S.calTarget = targets[0][0];
+  const seg = targets.map(([k, n]) => `<button type="button" data-cal="${k}" class="${S.calTarget === k ? 'on ac' : ''}">${n}</button>`).join('');
+  return `<div class="card"><div class="row"><h3>Calendario</h3><span class="sp"></span><button type="button" data-month="prev" aria-label="Mes anterior">←</button><strong>${esc(label)}</strong><button type="button" data-month="next" aria-label="Mes siguiente">→</button></div>
+    <p class="small t-mu">Elige qué fecha anotas y pulsa el día. Volver a pulsarlo la quita. La franja marca los 14 días de la prueba cerrada.</p>
+    <div class="seg">${seg}</div>
+    <div class="cal">${cells}</div>
+    <div class="legend"><span><i style="background:var(--ac)"></i>Prueba cerrada</span><span><i style="background:#e0e7ff;outline:1px solid #c7d2fe"></i>Los 14 días</span><span><i style="background:var(--play)"></i>Envío a Play</span><span><i style="background:var(--apple)"></i>Envío a Apple</span></div></div>`;
+}
+
+function profileForm() {
+  const gaps = profileGaps();
+  const play = S.platform === 'ios' ? '' : `<label>Categoría en Google Play *<select data-cat="play" aria-label="Categoría en Google Play">${optList(SHIP.PLAY, S.f.playCat || '', 'Elige la categoría')}</select></label>
+    <label>${S.f.playCat === 'GAME' ? 'Tipo de juego en Play' : 'Subcategoría en Play'} *<select data-sub="play" aria-label="Subcategoría en Google Play" ${S.f.playCat ? '' : 'disabled'}>${optList(SHIP.subcategories('play', S.f.playCat), S.f.playSub || '', 'Elige')}</select></label>`;
+  const apple = S.platform === 'android' ? '' : `<label>Categoría en App Store *<select data-cat="apple" aria-label="Categoría en App Store">${optList(SHIP.APPLE, S.f.iosCat || '', 'Elige la categoría')}</select></label>
+    <label>${S.f.iosCat === 'GAMES' ? 'Tipo de juego en App Store' : 'Categoría secundaria en App Store'} *<select data-sub="apple" aria-label="Subcategoría en App Store" ${S.f.iosCat ? '' : 'disabled'}>${optList(SHIP.subcategories('apple', S.f.iosCat), S.f.iosSub || '', 'Elige')}</select></label>`;
+  const gap = gaps.length ? `<p class="small" id="profileGap">Para generar la ficha y los prompts falta ${esc(gaps.join(', '))}.</p>` : '<p class="small" id="profileGap">Perfil listo. Los prompts de Políticas salen con estos datos.</p>';
+  const warns = [];
+  if (S.platform !== 'ios' && (S.f.playCat === 'FINANCE' || S.f.playCat === 'MEDICAL')) warns.push('En Google Play, Finanzas y las apps médicas que la política lista se publican con cuenta de organización y D-U-N-S.');
+  if (S.platform !== 'android' && S.f.iosCat === 'FINANCE') warns.push('En la App Store, una billetera de cripto la ofrece un desarrollador organización. La compra y venta pasa por un exchange aprobado, con licencia en los países de la ficha.');
+  const warn = warns.length ? `<div class="banner"><b>Esta categoría mira la cuenta y las autorizaciones.</b> ${warns.join(' ')}</div>` : '';
+  return `<div class="card ${gaps.length ? 'need' : ''}"><p class="kicker">Perfil de la ficha</p><h3>Nombre, descripción y categoría de la tienda</h3>
+    <p class="small t-mu">Son los mismos campos que piden Play Console y App Store Connect. Sin esto, los textos de Políticas quedan incompletos.</p>
+    <div class="fields">
+      <label class="wide">Nombre de la app *<input id="app" maxlength="30" placeholder="Como se verá en la tienda" autocomplete="off" value="${esc(S.app || '')}" aria-label="Nombre de tu app"></label>
+      <label class="wide">Descripción breve *<textarea id="descField" data-f="desc" maxlength="400" placeholder="Qué hace, para quién, en una o dos frases">${esc(S.f.desc || '')}</textarea><span class="t-mu" id="descCount"></span></label>
+      ${play}${apple}
+    </div>${gap}${warn}</div>`;
+}
+function sheet() {
+  if (profileGaps().length) return '';
+  const name = S.app.trim();
+  const desc = S.f.desc.trim();
+  const short = desc.length <= 80 ? desc : desc.slice(0, 77).trimEnd() + '…';
+  const rows = [`<dt>Nombre (${name.length}/30)</dt><dd>${esc(name)}</dd>`, `<dt>Descripción corta de Play (${Math.min(desc.length, 80)}/80)</dt><dd>${esc(short)}</dd>`];
+  if (S.platform !== 'ios') rows.push(`<dt>Google Play</dt><dd>${esc(catName('play', S.f.playCat))} · ${esc(subName('play', S.f.playCat, S.f.playSub))}</dd>`);
+  if (S.platform !== 'android') rows.push(`<dt>App Store</dt><dd>${esc(catName('apple', S.f.iosCat))} · ${esc(subName('apple', S.f.iosCat, S.f.iosSub))}</dd>`);
+  rows.push(`<dt>Descripción de trabajo (${desc.length} caracteres)</dt><dd>${esc(desc)}</dd>`);
+  return `<div class="card sheet"><p class="kicker">Listo para copiar a la ficha</p><h3>${esc(name)}</h3><dl>${rows.join('')}</dl>
+    <p class="small t-mu">La descripción larga, la política y las declaraciones salen en Políticas, con este perfil ya metido en el prompt.</p>
+    <p><button type="button" class="pri" data-go="pol">Abrir los prompts</button></p></div>`;
+}
+
+function trackSteps(track) {
+  return SHIP.STEPS.filter((s) => s.phase !== 'Post-lanzamiento' && (s.platform === 'all' || s.platform === track));
+}
+function trackCard(track) {
+  const name = track === 'android' ? 'Google Play' : 'App Store';
+  const ico = track === 'android' ? ICON_PLAY : ICON_APPLE;
+  const all = trackSteps(track);
+  const pct = all.length ? Math.round(all.filter((s) => SHIP.isFinished(S, s)).length / all.length * 100) : 0;
+  const next = all.find((s) => !SHIP.isFinished(S, s) && !SHIP.orgCanSkip(S, s));
+  return `<div class="card"><div class="row">${ico}<h3>${name}</h3><span class="sp"></span><span class="pill ${SC[S.st[track]]}">${STAT[S.st[track]]}</span></div>
+    <div class="small t-mu" style="margin-top:8px">${pct}% de esta vía</div>
+    <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Avance de ${name}"><i style="width:${pct}%"></i></div>
+    <p class="small">${next ? '<b>Siguiente:</b> '+esc(next.title) : 'Vía marcada.'}</p>
+    <div class="seg">${STAT.map((n, i) => `<button type="button" data-st="${track}:${i}" class="${S.st[track] === i ? 'on '+SC[i] : ''}">${n}</button>`).join('')}</div>
+    <p><button type="button" class="pri" data-go="${track}">Abrir pasos</button></p></div>`;
+}
+function phaseRoute(n) {
+  const phases = [];
+  n.list.forEach((s) => {
+    let p = phases.find((x) => x.name === s.phase);
+    if (!p) { p = { name: s.phase, n: 0, done: 0 }; phases.push(p); }
+    p.n++;
+    if (SHIP.isFinished(S, s)) p.done++;
+  });
+  const current = n.step && n.step.phase;
+  return phases.map((p) => {
+    const pct = p.n ? Math.round(p.done / p.n * 100) : 0;
+    const cls = p.done === p.n ? 'done' : p.name === current ? 'now' : '';
+    return `<li class="${cls}"><span>${esc(p.name)}</span><b>${pct}%</b><div class="bar"><i style="width:${pct}%"></i></div></li>`;
+  }).join('');
+}
+function progressHero(n) {
+  const pct = n.total ? Math.round(n.doneCount / n.total * 100) : 0;
+  return `<section class="hero"><div class="row">${icons()}<div><p class="kicker">Ruta de hoy</p><div class="pct">${pct}%</div></div><span class="sp"></span><div class="small t-mu">${n.doneCount} de ${n.total} pasos</div></div>
+    <div class="bar xl" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Avance total"><i style="width:${pct}%"></i></div>
+    <ol class="phases">${phaseRoute(n)}</ol></section>`;
+}
+
+function nowCard(n) {
+  if (n.waiting) {
+    return `<div class="card now"><p class="kicker">Ahora</p><h2>No pidas producción todavía</h2>
+      <p>Vas por el día ${n.day} de 14. Fecha orientativa: <b>${esc(pretty(n.earliest))}</b>. La que manda es la de Play Console.</p>
+      <p>Mientras corre puedes subir otro AAB a la misma prueba, dejar la ficha presentable y preparar el CI de la segunda versión.</p></div>`;
+  }
+  if (!n.step) {
+    return `<div class="card now"><p class="kicker">Ahora</p><h2>Los pasos están marcados</h2>
+      <p>Antes de pulsar enviar, pasa la compuerta. Un rechazo te devuelve al final de la cola.</p>
+      <p><button type="button" class="pri" data-go="gate">Abrir pre-envío</button></p></div>`;
+  }
+  const s = n.step;
+  const since = S.closedStartedAt && S.platform !== 'ios' && S.playAccount !== 'org' ? SHIP.daysSince(S.closedStartedAt) : null;
+  const side = s.platform === 'ios' && since !== null && since >= 0 && since < 14
+    ? `<p class="small">Android sigue en prueba cerrada (día ${since + 1} de 14). No pares iOS por eso.</p>` : '';
+  const extra = s.id === 'prep-accounts' ? accountsHtml() : linksHtml(s);
+  return `<div class="card now"><p class="kicker">Ahora · ${esc(s.phase)} · ${esc(s.time)}</p><h2>${esc(s.title)}</h2>
+    ${crumb(s)}<p>${esc(s.why || '')}</p>${s.tip ? `<p><b>Para no perder días: </b>${esc(s.tip)}</p>` : ''}${side}${extra}${cmdsHtml(s)}
+    <p><button type="button" class="pri" data-done="${s.id}">Marcar hecho</button> <button type="button" data-skip="${s.id}">No aplica</button></p></div>`;
+}
+
+function home() {
+  if (!SHIP) return '<p>No se cargó catalog.js. Desde el repo: <code>node bin/ship.js web</code></p>';
+  const n = SHIP.nextAction(S);
+  const banner = (S.platform !== 'ios' && !S.playAccount)
+    ? `<div class="banner"><b>Elige el tipo de cuenta de Play.</b> En una personal nueva, la prueba cerrada de 14 días es el tramo que no se acorta. Si la app es financiera, de cripto, de salud, VPN o de un gobierno, Play exige organización: la cuenta personal no lo evita, y el D-U-N-S puede tardar hasta 30 días.</div>` : '';
+  const pick = S.platform === 'ios' ? '' : `<div class="card"><h3>Tipo de cuenta de Google Play</h3><div class="seg" style="margin-top:8px">${accountButtons()}</div>
+    <p class="small t-mu">${{personal:'Con cuenta personal nueva, la prueba cerrada de 14 días es el tramo que no se acorta. No vale si Play exige organización.', org:'Si tu consola no pide testers ni prueba cerrada, márcalos como no aplica. La declaración de funciones financieras se completa igual.', unknown:'Hasta que lo confirmes, el plan incluye los 14 días. Finanzas, cripto, salud, VPN y gobiernos usan organización.'}[S.playAccount] || ''}</p></div>`;
+  const also = n.also.length ? `<div class="card"><h3>Adelanta esto sin frenar el paso de arriba</h3><ul>${n.also.map((s) => `<li>${esc(s.title)}</li>`).join('')}</ul></div>` : '';
+  const opt = n.optional.length ? `<div class="card"><h3>Con organización verificada, estos no suelen aplicar</h3>${n.optional.map((s) => `<p><button type="button" data-skip="${s.id}">Marcar «${esc(s.title)}» como no aplica</button></p>`).join('')}</div>` : '';
+  const tracks = (S.platform === 'both' ? ['android','ios'] : [S.platform]).map(trackCard).join('');
+  return `${progressHero(n)}${profileForm()}${sheet()}${banner}${pick}${nowCard(n)}${also}${opt}${clockCards()}${calendarHtml()}<div class="grid">${tracks}</div>`;
+}
+
+function ruta() {
+  return `<h2>La ruta que cabe en el calendario mínimo</h2>
+    <p>iOS puede estar en la tienda la primera semana. Android, si la cuenta personal es nueva, espera 14 días de prueba cerrada. El error caro es empezar esa prueba cuando la app ya esté perfecta.</p>
+    ${calendarHtml()}
+    <img class="wide" src="img/ruta.svg" width="960" height="400" alt="Calendario: cuentas el día 0, prueba cerrada de Android del día 1 al 15, revisión de iOS en paralelo los primeros días.">
+    <div class="grid">
+      <div class="card"><h3>Expo</h3><p>El camino con menos firma manual. <code>eas build</code> y <code>eas submit</code>. No hace falta Mac. Copia <code>templates/eas.json</code> y deja <code>autoIncrement</code> para no repetir versionCode.</p></div>
+      <div class="card"><h3>Sin Mac, y no es Expo</h3><p>El archive de iOS no sale de un simulador ni de Linux. Usa Codemagic o GitHub Actions con runner macOS. El AAB de Android sí sale en cualquier sistema.</p></div>
+      <div class="card"><h3>Play personal nueva</h3><p>Cuentas creadas después del 13 de noviembre de 2023: 12 testers opted-in, 14 días seguidos, antes de producción. Reclútalos el día 0. No vale para finanzas, cripto, salud, VPN ni apps de gobierno.</p></div>
+      <div class="card"><h3>Organización</h3><p>En Play, una organización ya verificada publica sin el requisito de 12 testers y 14 días. Finanzas, cripto, salud, VPN y gobiernos usan esa cuenta. El D-U-N-S es gratis y, si la empresa no lo tiene, puede tardar hasta 30 días. En la App Store, una billetera de cripto también se publica con la membresía de organización, y un exchange necesita licencia en cada país de la ficha.</p></div>
+    </div>`;
+}
+
+function stepsView(tab) {
+  const phase = PHASE[tab];
+  const open = keepScroll ? new Set([...document.querySelectorAll('details[open][data-sid]')].map((d) => d.dataset.sid)) : new Set();
+  const head = tab === 'prep' ? '' : `<div class="seg" style="margin:8px 0">${STAT.map((n, i) => `<button type="button" data-st="${tab}:${i}" class="${S.st[tab] === i ? 'on '+SC[i] : ''}">${n}</button>`).join('')}</div>`;
+  const list = SHIP.STEPS.filter((s) => s.phase === phase && SHIP.inScope(S, s)).map((s) => stepHtml(s, open.has(s.id))).join('');
+  const ico = tab === 'android' ? ICON_PLAY : tab === 'ios' ? ICON_APPLE : '';
+  return `<h2><span class="row">${ico} ${esc(phase)}</span></h2>${head}${list}`;
+}
+
+function gateView() {
+  const list = SHIP.gatesFor(S.platform);
+  const done = list.filter((g) => S.gates[g.id]).length;
+  const pct = list.length ? Math.round(done / list.length * 100) : 0;
+  return `<h2>Antes de enviar</h2>
+    <p class="t-mu">${pct}% · ${done} de ${list.length}. Cada fallo aquí suele costar otro turno de revisión.</p>
+    <div class="bar xl" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Compuerta de pre-envío"><i style="width:${pct}%"></i></div>
+    ${list.map((g) => `<div class="card step ${S.gates[g.id] ? 'd' : ''}"><input type="checkbox" data-gate="${g.id}" ${S.gates[g.id] ? 'checked' : ''} aria-label="${esc(g.title)}"><div><h3>${esc(g.title)}</h3><p class="small">${esc(g.how)}</p></div></div>`).join('')}`;
+}
+
+function fill(t) {
+  const cuenta = { personal:'personal nueva', org:'organización ya verificada', unknown:'aún no confirmada' }[S.playAccount] || '[completa: cuenta]';
+  const map = Object.assign({}, S.f, {
+    app: String(S.app || '').trim() || '[completa: app]',
+    fw: FWN[S.framework] || S.framework,
+    cuenta,
+    playCat: S.platform === 'ios' ? 'no publica en Google Play' : (catName('play', S.f.playCat) || '[completa: categoría de Play]'),
+    playSub: S.platform === 'ios' ? 'no publica en Google Play' : (subName('play', S.f.playCat, S.f.playSub) || '[completa: subcategoría de Play]'),
+    iosCat: S.platform === 'android' ? 'no publica en App Store' : (catName('apple', S.f.iosCat) || '[completa: categoría de App Store]'),
+    iosSub: S.platform === 'android' ? 'no publica en App Store' : (subName('apple', S.f.iosCat, S.f.iosSub) || '[completa: subcategoría de App Store]'),
+  });
+  return t.replace(/\{(\w+)\}/g, (m, k) => (map[k] == null || map[k] === '') ? '[completa: '+k+']' : map[k]);
+}
+function contextBlock() {
+  const lines = [
+    'Contexto de la ficha (no lo borres):',
+    'App: ' + String(S.app || '').trim(),
+    'Descripción: ' + String(S.f.desc || '').trim(),
+    'Tecnología: ' + (FWN[S.framework] || S.framework),
+  ];
+  if (S.platform !== 'ios') lines.push('Google Play: ' + catName('play', S.f.playCat) + ' / ' + subName('play', S.f.playCat, S.f.playSub));
+  if (S.platform !== 'android') lines.push('App Store: ' + catName('apple', S.f.iosCat) + ' / ' + subName('apple', S.f.iosCat, S.f.iosSub));
+  return lines.join('\n');
+}
+function pol() {
+  const gaps = profileGaps();
+  if (gaps.length) {
+    return `<h2>Textos para la IA</h2><p class="t-mu">Los prompts se arman cuando el perfil está completo. Falta ${esc(gaps.join(', '))}.</p>${profileForm()}`;
+  }
+  const list = SHIP.PROMPTS.filter((p) => (S.platform === 'both' || p[0] === 'both' || p[0] === S.platform) && (S.pf === 'all' || p[0] === S.pf || p[0] === 'both'));
+  const fields = SHIP.FIELDS.filter(([k]) => k !== 'desc').map(([k, l]) => `<label class="small">${esc(l)}<input data-f="${k}" value="${esc(S.f[k] || '')}" style="width:100%;margin-top:4px"></label>`).join('');
+  const segf = [['all','Todas'],['android','Google Play'],['ios','App Store']].map(([k, n]) => `<button type="button" data-pf="${k}" class="${S.pf === k ? 'on ac' : ''}">${n}</button>`).join('');
+  const cards = list.map((p, i) => `<div class="card"><div class="row"><h3>${esc(p[1])}</h3><span class="badge">${{both:'Ambas', android:'Google Play', ios:'App Store'}[p[0]]}</span></div><textarea readonly id="pr${i}">${esc(contextBlock() + '\n\n' + fill(p[2]))}</textarea><p><button type="button" class="pri" data-copyid="pr${i}">Copiar prompt completo</button></p></div>`).join('');
+  return `<h2>Textos para la IA</h2>
+    <p class="t-mu small">Cada prompt lleva el nombre, la descripción y la categoría que elegiste. Completa el resto una vez, copia y revisa el resultado antes de pegarlo en la tienda.</p>
+    ${sheet()}
+    <div class="card"><div class="grid">${fields}</div></div><div class="seg" style="margin:8px 0">${segf}</div>${cards}`;
+}
+
+function dockHtml(n) {
+  const pct = n.total ? Math.round(n.doneCount / n.total * 100) : 0;
+  const groups = [];
+  n.list.forEach((s) => {
+    let g = groups.find((x) => x.name === s.phase);
+    if (!g) { g = { name: s.phase, steps: [] }; groups.push(g); }
+    g.steps.push(s);
+  });
+  const steps = groups.map((g) => `<div class="dock-col"><h3>${esc(g.name)}</h3>${g.steps.map((s) => `<label class="dock-item"><input type="checkbox" data-id="${s.id}" ${SHIP.isFinished(S, s) ? 'checked' : ''}>${esc(s.title)}${S.skipped[s.id] ? ' <span class="badge">no aplica</span>' : ''}</label>`).join('')}</div>`).join('');
+  const gates = SHIP.gatesFor(S.platform);
+  const ghtml = `<div class="dock-col"><h3>Pre-envío</h3>${gates.map((g) => `<label class="dock-item"><input type="checkbox" data-gate="${g.id}" ${S.gates[g.id] ? 'checked' : ''}>${esc(g.title)}</label>`).join('')}</div>`;
+  return { pct, sum: `Checks · ${n.doneCount} de ${n.total} · ${pct}%`, body: steps + ghtml };
+}
+
+function paintChrome(n) {
+  const pct = n.total ? Math.round(n.doneCount / n.total * 100) : 0;
+  $('#brandMarks').innerHTML = icons('both');
+  $('#sideMeter').innerHTML = `<div class="row"><span class="small t-mu">Avance</span><span class="sp"></span><b>${pct}%</b></div><div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Avance del plan"><i style="width:${pct}%"></i></div>`;
+  const counts = {};
+  n.list.forEach((s) => {
+    const tab = s.phase === 'Preparación' ? 'prep' : s.phase === 'Android' ? 'android' : s.phase === 'iOS' ? 'ios' : '';
+    if (!tab) return;
+    counts[tab] = counts[tab] || { n: 0, done: 0 };
+    counts[tab].n++;
+    if (SHIP.isFinished(S, s)) counts[tab].done++;
+  });
+  $('#sideNav').innerHTML = TABS.map(([k, name]) => {
+    const c = counts[k];
+    const badge = c ? `<span class="n">${c.done}/${c.n}</span>` : '';
+    const ico = k === 'android' ? ICON_PLAY : k === 'ios' ? ICON_APPLE : '';
+    return `<button type="button" data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${ico}${esc(name)}${badge}</button>`;
+  }).join('');
+  const gaps = profileGaps();
+  const who = String(S.app || '').trim() || 'Sin nombre';
+  $('#sideProfile').innerHTML = `<b style="color:var(--tx)">${esc(who)}</b><br>${gaps.length ? 'Perfil incompleto' : 'Perfil listo para los prompts'}`;
+  $('#count').textContent = pct + '%';
+  const dock = dockHtml(n);
+  $('#dockSum').innerHTML = `<strong>${esc(dock.sum)}</strong><span class="sp"></span><span class="bar" aria-hidden="true"><i style="width:${dock.pct}%"></i></span>`;
+  $('#dockBody').innerHTML = dock.body;
+  $('#dock').open = !!S.dockOpen;
+}
+
+function render() {
+  if (!SHIP) { $('#view').innerHTML = '<p>Falta catalog.js junto a este archivo.</p>'; return; }
+  normalizeSubs();
+  const y = keepScroll ? window.scrollY : 0;
+  $('#fw').value = S.framework;
+  $('#platform').value = S.platform;
+  const n = SHIP.nextAction(S);
+  paintChrome(n);
+  const v = $('#view');
+  if (S.tab === 'home') v.innerHTML = home();
+  else if (S.tab === 'ruta') v.innerHTML = ruta();
+  else if (S.tab === 'gate') v.innerHTML = gateView();
+  else if (S.tab === 'pol') v.innerHTML = pol();
+  else v.innerHTML = stepsView(S.tab);
+  const dc = $('#descCount');
+  if (dc) dc.textContent = String(S.f.desc || '').trim().length + ' caracteres';
+  if (keepScroll) window.scrollTo(0, y);
+  else window.scrollTo(0, 0);
+  keepScroll = false;
+}
+
+function copy(text, button) {
+  const done = () => { if (!button) return; const old = button.textContent; button.textContent = 'Copiado'; setTimeout(() => { button.textContent = old; }, 1200); };
+  const fallback = () => { const a = document.createElement('textarea'); a.value = text; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch (e) {} a.remove(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+  else fallback();
+}
+function md() {
+  const n = SHIP.nextAction(S);
+  const pct = n.total ? Math.round(n.doneCount / n.total * 100) : 0;
+  const lines = [`# Publicación de ${S.app || 'mi app'}`, '', S.f.desc || '', '', `Pasos: ${n.doneCount}/${n.total} (${pct}%)`, ''];
+  if (S.f.playCat) lines.push(`Google Play: ${catName('play', S.f.playCat)} / ${subName('play', S.f.playCat, S.f.playSub)}`);
+  if (S.f.iosCat) lines.push(`App Store: ${catName('apple', S.f.iosCat)} / ${subName('apple', S.f.iosCat, S.f.iosSub)}`, '');
+  if (S.closedStartedAt) lines.push(`Prueba cerrada: ${S.closedStartedAt}. Producción como pronto: ${SHIP.plusDays(S.closedStartedAt, 14)}.`, '');
+  [['android','Android'],['ios','iOS']].forEach(([p, name]) => {
+    if (S.platform !== 'both' && S.platform !== p) return;
+    lines.push(`## ${name} — ${STAT[S.st[p]]}`);
+    trackSteps(p).forEach((s) => lines.push(`- [${SHIP.isFinished(S, s) ? 'x' : ' '}] ${s.title}${S.skipped[s.id] ? ' (no aplica)' : ''}`));
+    lines.push('');
+  });
+  lines.push('## Antes de enviar');
+  SHIP.gatesFor(S.platform).forEach((g) => lines.push(`- [${S.gates[g.id] ? 'x' : ' '}] ${g.title}`));
+  return lines.join('\n');
+}
+function exportJson() {
+  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '.ship-progress.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function refreshPrompts() {
+  document.querySelectorAll('textarea[id^=pr]').forEach((area, i) => {
+    const list = SHIP.PROMPTS.filter((p) => (S.platform === 'both' || p[0] === 'both' || p[0] === S.platform) && (S.pf === 'all' || p[0] === S.pf || p[0] === 'both'));
+    if (list[i]) area.value = contextBlock() + '\n\n' + fill(list[i][2]);
+  });
+  const gap = $('#profileGap');
+  if (gap) {
+    const g = profileGaps();
+    gap.textContent = g.length ? 'Para generar la ficha y los prompts falta ' + g.join(', ') + '.' : 'Perfil listo. Los prompts de Políticas salen con estos datos.';
+  }
+  const dc = $('#descCount');
+  if (dc) dc.textContent = String(S.f.desc || '').trim().length + ' caracteres';
+}
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.dataset.tab || b.dataset.go) { S.tab = b.dataset.tab || b.dataset.go; }
+  else if (b.dataset.st) { const [p, i] = b.dataset.st.split(':'); S.st[p] = +i; }
+  else if (b.dataset.account) S.playAccount = b.dataset.account;
+  else if (b.dataset.pf) S.pf = b.dataset.pf;
+  else if (b.dataset.done) { mark(b.dataset.done, 'done'); }
+  else if (b.dataset.skip) { mark(b.dataset.skip, 'skip'); keepScroll = true; }
+  else if (b.dataset.acct) {
+    const parts = b.dataset.acct.split(':');
+    S.acct[parts[0]] = S.acct[parts[0]] === parts[1] ? '' : parts[1];
+    applyAcct();
+    keepScroll = true;
+  } else if (b.dataset.day) {
+    const key = { closed:'closedStartedAt', ios:'iosSubmittedAt', play:'playSubmittedAt' }[S.calTarget];
+    if (key) S[key] = S[key] === b.dataset.day ? '' : b.dataset.day;
+    keepScroll = true;
+  } else if (b.dataset.month) { shiftMonth(b.dataset.month === 'next' ? 1 : -1); keepScroll = true; }
+  else if (b.dataset.cal) { S.calTarget = b.dataset.cal; keepScroll = true; }
+  else if (b.dataset.cmd) {
+    const s = SHIP.STEPS.find((x) => x.id === b.dataset.cmd);
+    copy(cmdsOf(s).filter((x) => x[0] !== '#').join('\n'), b);
+    return;
+  } else if (b.dataset.copyid) { copy($('#' + b.dataset.copyid).value, b); return; }
+  else if (b.id === 'copyMd') { copy(md(), b); return; }
+  else if (b.id === 'exportJson') { exportJson(); return; }
+  else if (b.id === 'importBtn') { $('#importFile').click(); return; }
+  else if (b.id === 'reset') { if (!confirm('¿Borrar el progreso de este navegador?')) return; S = DEF(); }
+  else return;
+  save(); render();
+});
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset.id) { mark(t.dataset.id, t.checked ? 'done' : 'clear'); keepScroll = true; render(); }
+  else if (t.dataset.gate) { S.gates[t.dataset.gate] = t.checked; save(); keepScroll = true; render(); }
+  else if (t.dataset.cat) {
+    const key = t.dataset.cat === 'play' ? 'playCat' : 'iosCat';
+    const sub = t.dataset.cat === 'play' ? 'playSub' : 'iosSub';
+    S.f[key] = t.value;
+    S.f[sub] = '';
+    normalizeSubs();
+    save(); keepScroll = true; render();
+  } else if (t.dataset.sub) {
+    const key = t.dataset.sub === 'play' ? 'playSub' : 'iosSub';
+    S.f[key] = t.value;
+    save(); keepScroll = true; render();
+  } else if (t.id === 'fw') { S.framework = t.value; save(); render(); }
+  else if (t.id === 'platform') { S.platform = t.value; save(); render(); }
+  else if (t.id === 'accounts') {
+    S.accounts = t.value;
+    if (t.value === 'wait' || t.value === 'ok') S.done['prep-accounts'] = true;
+    if (!t.value) delete S.done['prep-accounts'];
+    save(); keepScroll = true; render();
+  }
+});
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.id === 'app' || (t.dataset && t.dataset.f)) {
+    const before = profileGaps().length === 0;
+    if (t.id === 'app') S.app = t.value;
+    else S.f[t.dataset.f] = t.value;
+    save();
+    const side = $('#sideProfile');
+    if (side) {
+      const who = String(S.app || '').trim() || 'Sin nombre';
+      const ready = profileGaps().length === 0;
+      side.innerHTML = `<b style="color:var(--tx)">${esc(who)}</b><br>${ready ? 'Perfil listo para los prompts' : 'Perfil incompleto'}`;
+    }
+    if (before !== (profileGaps().length === 0)) { keepScroll = true; render(); }
+    else refreshPrompts();
+  }
+});
+$('#dock').addEventListener('toggle', () => { S.dockOpen = $('#dock').open; save(); });
+$('#importFile').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(String(reader.result));
+      if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('formato');
+      S = Object.assign(DEF(), data);
+      if (data.fw && !data.framework) S.framework = data.fw;
+      ['done','skipped','gates','f','st','acct'].forEach((k) => { if (!S[k] || typeof S[k] !== 'object') S[k] = DEF()[k]; });
+      if (!S.st.android && S.st.android !== 0) S.st = DEF().st;
+      save(); render();
+    } catch (err) {
+      alert('Ese archivo no es un progreso de ship-mobile.');
+    }
+  };
+  reader.readAsText(file);
+});
+try { render(); }
+catch (err) {
+  const box = document.getElementById('view');
+  if (box) box.textContent = 'No se pudo abrir la guía: ' + (err && err.message ? err.message : err);
+}
+})();
+</script>
+</body>
+</html>
